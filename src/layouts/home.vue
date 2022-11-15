@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import homeHeader from '../views/homeHeader/index.vue'
 </script>
 
 <template>
   <el-container>
     <el-header>
-      你好，世界
+      <homeHeader />
     </el-header>
     <el-main>
       <router-view></router-view>
