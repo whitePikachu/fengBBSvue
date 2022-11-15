@@ -1,18 +1,46 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
-import { Check, Close } from '@element-plus/icons-vue'
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+import left from '../../components/header/hleft.vue'
+import hright from '../../components/header/hright.vue'
+import hsearch from '../../components/header/hsearch.vue'
 </script>
 
 <template>
-  <el-switch v-model="isDark"
-             class="mt-2"
-             style="margin-left: 24px"
-             inline-prompt
-             :active-icon="Check"
-             :inactive-icon="Close" />
+
+  <el-row justify="center">
+
+    <el-col :xs="3"
+            :sm="3"
+            :md="3"
+            :lg="3"
+            :xl="2">
+      <hright />
+    </el-col>
+    <el-col :xs="15"
+            :sm="17"
+            :md="17"
+            :lg="17"
+            :xl="18">
+      <div style="height: 10px;"
+           class="hidden-sm-and-down"></div>
+      <hsearch />
+    </el-col>
+    <el-col :xs="6"
+            :sm="4"
+            :md="3"
+            :lg="4"
+            :xl="4">
+      <div style="height: 10px;"
+           class="hidden-sm-and-down"></div>
+      <div class="left">
+        <left />
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <style scoped>
+.left {
+  display: flex;
+  justify-content: flex-end;
+}
 </style>
