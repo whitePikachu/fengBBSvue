@@ -7,6 +7,26 @@ const router = createRouter({
     {
       path: "/",
       component: () => import("../layouts/home.vue"),
+      children: [
+        {
+          path: "/home",
+          component: () => import("../views/home/index.vue"),
+        },
+        {
+          path: "/auth",
+          component: () => import("../layouts/auth.vue"),
+          children: [
+            {
+              path: "/auth/login",
+              component: () => import("../views/auth/login.vue"),
+            },
+            {
+              path: "/auth/register",
+              component: () => import("../views/auth/register.vue"),
+            },
+          ],
+        },
+      ],
     },
   ],
 });

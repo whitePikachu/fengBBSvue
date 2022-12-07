@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-const select = ref('')
+const select = ref('帖子')
 const input3 = ref('')
 </script>
 

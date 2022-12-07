@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import homeHeader from '../views/homeHeader/index.vue'
+import homefooter from '../views/homefooter/index.vue'
 </script>
 
 <template>
@@ -11,10 +12,16 @@ import homeHeader from '../views/homeHeader/index.vue'
       <router-view></router-view>
     </el-main>
     <el-footer>
-      BY:枫叶秋林
+      <div class="center">
+        <homefooter />
+      </div>
+
     </el-footer>
   </el-container>
 </template>
 
 <style scoped>
+.center {
+  text-align: center;
+}
 </style>
