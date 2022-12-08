@@ -109,7 +109,7 @@ onMounted(async () => {
     if (success === 4) {
       console.log('通过')
       codsuccess('success', encrypt(JSON.stringify(seed)))
-      init()
+
       return
     }
     if (seed.length === 4) {
@@ -117,7 +117,6 @@ onMounted(async () => {
         message: '验证失败',
         type: 'error',
       })
-      console.log('失败')
       init()
     }
   }
