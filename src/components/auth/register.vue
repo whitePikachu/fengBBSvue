@@ -2,6 +2,7 @@
 import { FormInstance, FormRules, ElMessage } from 'element-plus'
 import service from '../../plugins/axios'
 import { reactive, ref } from 'vue'
+import { token } from '../../plugins/pinia'
 
 let ressuccess = ''
 const codvisible = ref(false)
@@ -71,9 +72,10 @@ const bt_resgister = async (formEl: FormInstance | undefined) => {
         },
       })
         .then((res) => {
-          console.log(res)
-          localStorage.setItem('token', res.data.token)
-          ElMessage.success('注册成功')
+          if (res.data.token) {
+            token().token = res.data.token
+            ElMessage.success('注册成功')
+          }
         })
         .catch((err) => {
           ElMessage.error(err.message)

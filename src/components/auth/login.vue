@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { type } from 'os'
 import { reactive, ref } from 'vue'
+import service from '../../plugins/axios'
+import { token, userdata } from '../../plugins/pinia'
+import { encrypt } from '../../plugins/crypto'
 const form = reactive({
   name: '',
   paw: '',
@@ -16,12 +20,18 @@ const rules = reactive({
 })
 const formRef = ref()
 const bt_login = async (formEl: any) => {
-  formEl.validate((valid: boolean, e: any) => {
+  formEl.validate(async (valid: boolean, e: any) => {
     if (valid) {
-      console.log(form)
-    } else {
-      console.log('error submit!!')
-      return false
+      const userinfo = (await service.post('/auth/login', form)) as userdata
+      type userdata = {
+        id: number
+        name: string
+        email: string
+        createdAt: string
+        token: string
+      }
+      token().token = userinfo.token
+      userdata().data = encrypt(userinfo)
     }
   })
 }
@@ -62,7 +72,6 @@ const bt_login = async (formEl: any) => {
     </el-form-item>
   </el-form>
   <el-divider />
-  <!-- 快捷登录 -->
   <div>
     <el-button type="primary"
                style="width:98%;"

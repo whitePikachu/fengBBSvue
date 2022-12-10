@@ -18,6 +18,9 @@ service.interceptors.response.use(
   (error) => {
     const { status, data } = error.response;
     switch (status) {
+      case 400:
+        ElMessage.error(data.message);
+        break;
       case 401:
         ElMessage.error("token失效，请重新登录");
         router.push("/auth");
