@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { FormInstance, FormRules, ElMessage } from 'element-plus'
+import service from '../../plugins/axios'
 import { reactive, ref } from 'vue'
+
 let ressuccess = ''
 const codvisible = ref(false)
 const bt_disabled = ref(false)
@@ -7,26 +10,101 @@ function codsuccess(success: string) {
   codvisible.value = false
   bt_disabled.value = true
   ressuccess = success
+  form.cod = '✅验证通过'
 }
 const form = reactive({
   name: '',
+  emali: '',
   paw: '',
   paw1: '',
+  cod: '',
 })
+const rules = reactive<FormRules>({
+  name: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
+  ],
+  emali: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+    {
+      type: 'email',
+      message: '请输入正确的邮箱地址',
+      trigger: ['blur', 'change'],
+    },
+  ],
+  paw: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+  ],
+  paw1: [
+    { required: true, message: '请再次输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+    {
+      validator: (rule, value, callback) => {
+        if (value !== form.paw) {
+          callback(new Error('两次输入密码不一致!'))
+        } else {
+          callback()
+        }
+      },
+      trigger: 'blur',
+    },
+  ],
+  cod: [{ required: true, message: '请点击按钮进行验证', trigger: 'change' }],
+})
+const formRef = ref<FormInstance>()
+const bt_resgister = async (formEl: FormInstance | undefined) => {
+  formEl?.validate((valid, e) => {
+    if (valid) {
+      service({
+        url: 'auth/register',
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          cod: ressuccess,
+        },
+        data: {
+          name: form.name,
+          emali: form.emali,
+          paw: form.paw,
+        },
+      })
+        .then((res) => {
+          console.log(res)
+          localStorage.setItem('token', res.data.token)
+          ElMessage.success('注册成功')
+        })
+        .catch((err) => {
+          ElMessage.error(err.message)
+        })
+    }
+  })
+}
 </script>
 
 <template>
   <el-card class="box-card register">
-    <el-form :model="form"
-             label-position="top">
-      <el-form-item label="用户名">
+    <el-form ref="formRef"
+             :model="form"
+             label-position="top"
+             :rules="rules">
+      <el-form-item label="用户名"
+                    prop="name">
         <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="密码">
+      <el-form-item label="邮箱"
+                    prop="emali">
+        <el-input type="email"
+                  v-model="form.emali" />
+      </el-form-item>
+      <el-form-item label="密码"
+                    prop="paw">
         <el-input type="password"
                   v-model="form.paw" />
       </el-form-item>
-      <el-form-item label="确认密码">
+      <el-form-item label="确认密码"
+                    prop="paw1">
         <el-input type="password"
                   v-model="form.paw1" />
       </el-form-item>
@@ -37,7 +115,11 @@ const form = reactive({
                    href="#">《用户协议》</el-link>
         </el-checkbox>
       </el-form-item>
-      <el-form-item label="验证码">
+      <el-form-item label="验证码"
+                    prop="cod">
+        <el-input type="password"
+                  v-model="form.cod"
+                  style="display:none" />
         <el-popover placement="top"
                     :width="330"
                     :visible="codvisible">
@@ -64,7 +146,8 @@ const form = reactive({
     </el-form>
     <el-divider />
     <el-button type="primary"
-               style="width:100%;">注册</el-button>
+               style="width:100%;"
+               @click="bt_resgister(formRef)">注册</el-button>
     <br>
     <div>
       <el-button type="text"

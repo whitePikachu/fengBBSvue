@@ -1,5 +1,6 @@
 <script setup lang="ts">
-console.log(import.meta.env)
+import router from './plugins/router'
+router.push('/home')
 </script>
 
 <template>

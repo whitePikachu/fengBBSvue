@@ -16,7 +16,7 @@ onMounted(() => {
       avatar.style.opacity = '1'
       avatar.style.zIndex = '2'
       avatar.style.transform = 'scale(1.2)'
-      avatar.style.transition = 'all 1s'
+      avatar.style.transition = 'all .5s'
     }
   }
   function avatar_leave() {
@@ -24,7 +24,7 @@ onMounted(() => {
       avatar.style.top = '80px'
       avatar.style.opacity = '0'
       avatar.style.transform = 'scale(1.1)'
-      avatar.style.transition = 'all 1s'
+      avatar.style.transition = 'all .5s'
     }
   }
   register.addEventListener('mouseenter', avatar_move)
@@ -36,11 +36,11 @@ onMounted(() => {
   })
   function card_move(e: MouseEvent) {
     const target = e.target as HTMLElement
-    target.style.transform = 'translateX(30px)'
+    target.style.transform = 'translateX(25px)'
   }
   function card_leave(e: MouseEvent) {
     const target = e.target as HTMLElement
-    target.style.transform = 'translateX(15px)'
+    target.style.transform = 'translateX(10px)'
   }
   login.addEventListener('mouseenter', card_move)
   login.addEventListener('mouseleave', card_leave)
@@ -52,7 +52,7 @@ onMounted(() => {
       target.removeEventListener('mouseenter', card_move)
       target.removeEventListener('mouseleave', card_leave)
       target.style.transform = 'translateX(0px)'
-      register.style.transform = 'translateX(30px)'
+      register.style.transform = 'translateX(20px)'
       register.style.paddingRight = '30px'
       target.style.paddingRight = '20px'
       register.addEventListener('mouseenter', card_move)
@@ -66,7 +66,7 @@ onMounted(() => {
       target.removeEventListener('mouseenter', card_move)
       target.removeEventListener('mouseleave', card_leave)
       target.style.transform = 'translateX(0px)'
-      login.style.transform = 'translateX(30px)'
+      login.style.transform = 'translateX(20px)'
       login.style.paddingRight = '30px'
       target.style.paddingRight = '20px'
       login.addEventListener('mouseenter', card_move)
@@ -81,6 +81,9 @@ onMounted(() => {
   document.getElementById('to_login')?.addEventListener('click', () => {
     login.click()
     avatar_leave()
+  })
+  document.getElementById('to_register')?.addEventListener('click', () => {
+    register.click()
   })
 })
 </script>
@@ -113,13 +116,13 @@ onMounted(() => {
 .login {
   position: absolute;
   top: 0;
-  transform: translateX(15px);
+  padding-right: 25px;
   z-index: -1;
-  transition: all 1s;
+  transition: all 0.5s;
 }
 .register {
   position: relative;
-  transition: all 1s;
+  transition: all 0.5s;
 }
 
 #avatar {
@@ -133,7 +136,7 @@ onMounted(() => {
 }
 .box-card {
   min-width: 400px;
-  height: 500px;
+  min-height: 570px;
   margin-top: 50px;
   padding-top: 50px;
 }

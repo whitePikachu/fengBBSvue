@@ -11,10 +11,12 @@ const drawer = ref(false)
 </script>
 
 <template>
-  <el-image style="width: 100px; height: 50px"
-            :src="url"
-            class="hidden-sm-and-down"
-            fit="fit" />
+  <router-link to="/home">
+    <el-image style="width: 100px; height: 50px"
+              :src="url"
+              class="hidden-sm-and-down"
+              fit="fit" />
+  </router-link>
   <el-button type=""
              class="hidden-md-and-up"
              @click="drawer = true">
