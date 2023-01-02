@@ -6,11 +6,18 @@ const router = createRouter({
   routes: [
     {
       path: "/",
+      redirect: "/home",
       component: () => import("../layouts/home.vue"),
       children: [
         {
           path: "/home",
           component: () => import("../views/home/index.vue"),
+          children: [
+            {
+              path: "/platelist/:id",
+              component: () => import("../views/plate/platelist.vue"),
+            },
+          ],
         },
         {
           path: "/auth",

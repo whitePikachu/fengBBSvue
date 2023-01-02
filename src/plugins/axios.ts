@@ -22,6 +22,10 @@ service.interceptors.response.use(
         ElMessage.error(data.message);
         break;
       case 401:
+        //主页跳转不需要判断
+        if (router.currentRoute.value.path === "/home") {
+          return Promise.reject(error);
+        }
         ElMessage.error("token失效，请重新登录");
         router.push("/auth");
         break;

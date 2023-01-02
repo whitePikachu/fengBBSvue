@@ -4,6 +4,7 @@ import { reactive, ref } from 'vue'
 import service from '../../plugins/axios'
 import { token, userdata } from '../../plugins/pinia'
 import { encrypt } from '../../plugins/crypto'
+import { ElMessage, FormInstance } from 'element-plus'
 const form = reactive({
   name: '',
   paw: '',
@@ -11,7 +12,7 @@ const form = reactive({
 const rules = reactive({
   name: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
+    { min: 5, max: 16, message: '长度在 4 到 16 个字符', trigger: 'blur' },
   ],
   paw: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -19,19 +20,26 @@ const rules = reactive({
   ],
 })
 const formRef = ref()
-const bt_login = async (formEl: any) => {
-  formEl.validate(async (valid: boolean, e: any) => {
+const bt_login = async (formEl: FormInstance | undefined) => {
+  formEl?.validate(async (valid: boolean, e: any) => {
     if (valid) {
-      const userinfo = (await service.post('/auth/login', form)) as userdata
+      const userinfo = (await (
+        await service.post('/auth/login', form)
+      ).data) as userdata
       type userdata = {
-        id: number
-        name: string
-        email: string
-        createdAt: string
+        cod: number
+        msg: string
         token: string
       }
+      ElMessage({
+        message: userinfo.msg,
+        type: userinfo.cod === 200 ? 'success' : 'error',
+      })
+      //跳转到主页
+      if (userinfo.cod === 200) {
+        window.location.href = '/home'
+      }
       token().token = userinfo.token
-      userdata().data = encrypt(userinfo)
     }
   })
 }
@@ -75,7 +83,7 @@ const bt_login = async (formEl: any) => {
   <div>
     <el-button type="primary"
                style="width:98%;"
-               @click="bt_login(formRef.value)">
+               @click="bt_login(formRef)">
       登陆
     </el-button>
     <el-button type="text"

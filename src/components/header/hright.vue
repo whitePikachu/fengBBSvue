@@ -25,16 +25,14 @@ const drawer = ref(false)
     </el-icon>
   </el-button>
   <el-drawer v-model="drawer"
-             direction="ltr">
-    <template #header="{titleId, titleClass}">
-      <span :id="titleId"
-            :class="titleClass">设置</span>
-    </template>
-
+             direction="ltr"
+             :with-header="false"
+             size="50%">
     <template #default>
       <el-image style=" min-width: 100px; height: 50px"
                 :src="url"
                 fit="fit" />
+      <el-divider>设置</el-divider>
       <el-form label-width="80px"
                label-position="">
         <el-form-item label="夜间模式">
@@ -45,6 +43,19 @@ const drawer = ref(false)
                      :inactive-icon="Sunny" />
         </el-form-item>
       </el-form>
+      <!-- 分割线 -->
+      <el-divider>菜单</el-divider>
+      <el-menu>
+        <el-menu-item index="1">
+          首页
+        </el-menu-item>
+        <el-menu-item index="2">
+          帖子
+        </el-menu-item>
+        <el-menu-item index="3">
+          热点
+        </el-menu-item>
+      </el-menu>
 
     </template>
 

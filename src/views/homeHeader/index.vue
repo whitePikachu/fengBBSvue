@@ -13,11 +13,13 @@ import hsearch from '../../components/header/hsearch.vue'
             :md="3"
             :lg="3"
             :xl="2">
+      <div style="height: 10px;"
+           class="hidden-sm-and-down"></div>
       <hright />
     </el-col>
     <el-col :xs="15"
             :sm="17"
-            :md="17"
+            :md="15"
             :lg="17"
             :xl="18">
       <div style="height: 10px;"
@@ -26,7 +28,7 @@ import hsearch from '../../components/header/hsearch.vue'
     </el-col>
     <el-col :xs="6"
             :sm="4"
-            :md="3"
+            :md="5"
             :lg="4"
             :xl="4">
       <div style="height: 10px;"
