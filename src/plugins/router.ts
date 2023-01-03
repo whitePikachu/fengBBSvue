@@ -12,16 +12,15 @@ const router = createRouter({
         {
           path: "/home",
           component: () => import("../views/home/index.vue"),
-          children: [
-            {
-              path: "/platelist/:id",
-              component: () => import("../views/plate/platelist.vue"),
-            },
-          ],
+          children: [],
         },
         {
           path: "/auth",
           component: () => import("../layouts/auth.vue"),
+        },
+        {
+          path: "/platelist/:id",
+          component: () => import("../views/plate/platelist.vue"),
         },
       ],
     },

@@ -4,12 +4,18 @@ import { useRoute } from 'vue-router'
 import service from '../../plugins/axios'
 import platePostItem from '../../components/plate/platePostItem.vue'
 let id = useRoute().params.id as any
-
+id = id ? id : 0
 const data = ref(
   await (
     await service.get(`/post/platelist?plateid=${id}&page=${1}&limit=${5}`)
   ).data
 )
+if (useRoute().query.title) {
+  data.value = await (
+    await service.get(`/post/search?title=${useRoute().query.title}&page=${1}`)
+  ).data
+}
+
 const page = async (v: number) => {
   data.value = await (
     await service.get(`/post/platelist?plateid=${id}&page=${v}&limit=${5}`)

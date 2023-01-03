@@ -11,7 +11,18 @@ const input3 = ref('')
 
 const spacer = h(ElDivider, { direction: 'vertical' })
 const to_home = () => {
-  router.push('/home')
+  // router.push('/home')
+  window.location.href = '/home'
+}
+const to_post = () => {
+  // router.push('/platelist/0')
+  window.location.href = '/platelist/0'
+}
+const search = () => {
+  if (select.value === '帖子') {
+    // router.push(`/platelist/0?title=${input3.value}`)
+    window.location.href = `/platelist/0?title=${input3.value}`
+  }
 }
 </script>
 
@@ -24,7 +35,8 @@ const to_home = () => {
                  @click="to_home"> 首页</el-button>
     </div>
     <div>
-      <el-button text> 帖子</el-button>
+      <el-button text
+                 @click="to_post"> 帖子</el-button>
     </div>
     <div>
       <el-button text> 热点</el-button>
@@ -43,7 +55,8 @@ const to_home = () => {
           </el-select>
         </template>
         <template #append>
-          <el-button :icon="Search" />
+          <el-button :icon="Search"
+                     @click="search" />
         </template>
       </el-input>
     </div>

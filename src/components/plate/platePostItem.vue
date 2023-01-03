@@ -60,7 +60,8 @@ console.log(JSON.stringify(userinfo))
                    size="large" />
       </el-col>
       <el-col :span="20">
-        <span class="title">{{dp.title}}</span>
+        <span class="title"
+              v-html="dp.title" />
         <p class="content">{{dp.content}}</p>
         <!-- 左边 -->
         <div type="text"

@@ -2,7 +2,14 @@
 </script>
 
 <template>
-  <router-view></router-view>
+  <Suspense>
+    <template #default>
+      <router-view />
+    </template>
+    <template #fallback>
+      <el-skeleton />
+    </template>
+  </Suspense>
 </template>
 
 <style scoped>
