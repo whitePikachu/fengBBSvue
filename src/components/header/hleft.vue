@@ -3,11 +3,13 @@ import { useDark, useToggle } from '@vueuse/core'
 import { Sunny, Moon } from '@element-plus/icons-vue'
 import userinfo from './userinfo.vue'
 import router from '../../plugins/router'
-import { token } from '../../plugins/pinia'
+import { token, Avatar } from '../../plugins/pinia'
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const to_login = async () => {
-  await router.push('/auth')
+  //跳转到主页
+  // await router.push('/auth?type=login')
+  window.location.href = '/auth?type=login'
 }
 </script>
 
@@ -28,7 +30,7 @@ const to_login = async () => {
         <div>
           <el-avatar id="login_avatar"
                      v-show="token().token"
-                     src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+                     :src="Avatar().URL" />
         </div>
       </template>
       <Suspense>

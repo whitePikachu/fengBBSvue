@@ -23,6 +23,26 @@ export const userdata = defineStore({
   state: () => {
     return {
       data: "",
+      username: "",
+      email: "",
+      level: 0,
+      exp: 0,
+    };
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage,
+      },
+    ],
+  },
+});
+export const Avatar = defineStore({
+  id: "userdata",
+  state: () => {
+    return {
+      URL: "",
     };
   },
   persist: {

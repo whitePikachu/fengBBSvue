@@ -3,6 +3,10 @@ import { onMounted } from 'vue'
 import cod from './../components/cod/index.vue'
 import register from './../components/auth/register.vue'
 import login from './../components/auth/login.vue'
+
+import { useRoute } from 'vue-router'
+const router = useRoute()
+
 onMounted(() => {
   const avatar = document.getElementById('avatar')
   const register = document.getElementsByClassName('box-card')[0] as HTMLElement
@@ -85,6 +89,14 @@ onMounted(() => {
   document.getElementById('to_register')?.addEventListener('click', () => {
     register.click()
   })
+  if (router.query.type) {
+    if (router.query.type === 'login') {
+      login.click()
+    }
+    if (router.query.type === 'register') {
+      register.click()
+    }
+  }
 })
 </script>
 

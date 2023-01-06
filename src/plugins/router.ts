@@ -22,6 +22,20 @@ const router = createRouter({
           path: "/platelist/:id",
           component: () => import("../views/plate/platelist.vue"),
         },
+        {
+          path: "/user",
+          component: () => import("../layouts/userinfo.vue"),
+          children: [
+            {
+              path: "/user/userinfo",
+              component: () => import("../views/userinfo/putuserinfo.vue"),
+            },
+            {
+              path: "/user/postlist/:id",
+              component: () => import("../views/plate/platelist.vue"),
+            },
+          ],
+        },
       ],
     },
   ],

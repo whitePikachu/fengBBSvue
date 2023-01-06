@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import service from '../../plugins/axios'
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
+import { API_URL } from '../../config'
 
 const dp = defineProps({
   id: {
@@ -45,19 +46,23 @@ function formatDate(date: any) {
   }
   return Math.ceil(diff / (3600 * 24)) + '天前'
 }
-
-const userinfo = await (
-  await service.get(`userinfo/getuser?id=${dp.authorid}`)
-).data
-console.log(JSON.stringify(userinfo))
+const userinfo = ref(
+  await (
+    await service.get(`userinfo/getuser?id=${dp.authorid}`)
+  ).data
+)
+userinfo.value.data.user.avatar = API_URL + userinfo.value.data.user.avatar
 </script>
 
 <template>
   <el-card>
     <el-row>
       <el-col :span="4">
-        <el-avatar :src="userinfo.data.user.avatar? userinfo.data.user.avatar : 'https://avatars.githubusercontent.com/u/25154432?v=4'"
-                   size="large" />
+        <div>
+          <el-avatar :src="userinfo.data.user.avatar? userinfo.data.user.avatar : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
+                     size="large" />
+        </div>
+
       </el-col>
       <el-col :span="20">
         <span class="title"
@@ -67,7 +72,7 @@ console.log(JSON.stringify(userinfo))
         <div type="text"
              style="float: left">
           <el-space wrap>
-            <el-tag type="primary">{{ userinfo.data.username }}</el-tag>
+            <el-tag type="primary">作者：{{ userinfo.data.user.nickname }}</el-tag>
             <el-tag type="info">{{ formatDate(dp.time) }}</el-tag>
             <el-tag type="success">回复{{ dp.numberOfReplies?numberOfReplies:0 }}</el-tag>
             <el-tag type="warning">浏览量～开发中</el-tag>

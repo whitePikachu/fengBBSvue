@@ -2,7 +2,7 @@
 import { type } from 'os'
 import { reactive, ref } from 'vue'
 import service from '../../plugins/axios'
-import { token, userdata } from '../../plugins/pinia'
+import { token, Avatar } from '../../plugins/pinia'
 import { encrypt } from '../../plugins/crypto'
 import { ElMessage, FormInstance } from 'element-plus'
 const form = reactive({
