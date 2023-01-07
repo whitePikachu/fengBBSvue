@@ -1,9 +1,10 @@
 import axios from "axios";
 import { ElMessage } from "element-plus";
 import router from "./router";
+import { API_URL } from "../config";
 //axios封装
 const service = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: API_URL,
   timeout: 5000,
 });
 //请求拦截器

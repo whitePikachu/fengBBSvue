@@ -72,7 +72,7 @@ const logout = () => {
                  router="#default">
           <el-menu-item index="/user/userinfo">修改资料</el-menu-item>
           <el-menu-item index="/user/postlist/0?type=user">我的帖子</el-menu-item>
-          <el-menu-item index="3">账户安全</el-menu-item>
+          <el-menu-item index="/user/accountsecurity">账户安全</el-menu-item>
         </el-menu>
         <el-menu mode="horizontal"
                  class="hidden-md-and-up"
@@ -80,7 +80,7 @@ const logout = () => {
                  router="#default">
           <el-menu-item index="/user/userinfo">修改资料</el-menu-item>
           <el-menu-item index="/user/postlist/0?type=user">我的帖子</el-menu-item>
-          <el-menu-item index="3">账户安全</el-menu-item>
+          <el-menu-item index="/user/accountsecurity">账户安全</el-menu-item>
         </el-menu>
       </el-card>
 

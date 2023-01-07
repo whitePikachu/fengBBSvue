@@ -4,6 +4,7 @@ import { Sunny, Moon } from '@element-plus/icons-vue'
 import userinfo from './userinfo.vue'
 import router from '../../plugins/router'
 import { token, Avatar } from '../../plugins/pinia'
+import { onMounted } from 'vue-demi'
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const to_login = async () => {
@@ -11,6 +12,22 @@ const to_login = async () => {
   // await router.push('/auth?type=login')
   window.location.href = '/auth?type=login'
 }
+onMounted(() => {
+  const login_avatar = document.getElementById('login_avatar')
+  if (login_avatar) {
+    //鼠标进入头像旋转360度
+    login_avatar.addEventListener('mouseenter', () => {
+      login_avatar.style.transition = 'all 0.5s'
+      login_avatar.style.transform = 'rotate(360deg)'
+    })
+    //鼠标离开头像旋转回来
+    login_avatar.addEventListener('mouseleave', () => {
+      //一秒动画
+      login_avatar.style.transition = 'all 0.5s'
+      login_avatar.style.transform = 'rotate(0deg)'
+    })
+  }
+})
 </script>
 
 <template>

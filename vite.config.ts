@@ -5,7 +5,11 @@ import Components from "unplugin-vue-components/vite";
 import IconsResolver from "unplugin-icons/resolver";
 import Icons from "unplugin-icons/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import { prismjsPlugin } from "vite-plugin-prismjs";
 export default defineConfig({
+  optimizeDeps: {
+    include: ["@kangc/v-md-editor/lib/theme/vuepress.js"],
+  },
   plugins: [
     vue(),
     AutoImport({
@@ -27,6 +31,9 @@ export default defineConfig({
     }),
     Icons({
       autoInstall: true,
+    }),
+    prismjsPlugin({
+      languages: "all",
     }),
   ],
 });

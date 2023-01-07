@@ -4,7 +4,7 @@ import service from '../../plugins/axios'
 import { Avatar, userdata } from '../../plugins/pinia'
 import { ref } from 'vue'
 import { API_URL } from '../../config'
-
+const count = ref()
 const info = ref()
 if (token().token) {
   const data = await service({
@@ -16,7 +16,9 @@ if (token().token) {
   })
   if (data.data.cod === 200) {
     info.value = data.data.data
-
+    count.value = await (
+      await service.get(`/userinfo/count?id=${data.data.data.auth_id}`)
+    ).data
     Avatar().URL = info.value.user.avatar
       ? API_URL + info.value.user.avatar
       : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
@@ -79,7 +81,7 @@ const outlogin = () => {
           <div style="text-align: center;">枫币</div>
         </el-col>
         <el-col :span="24">
-          <div style="text-align: center;">0</div>
+          <div style="text-align: center;">{{ count.data.mapleCoin}}</div>
         </el-col>
       </el-row>
     </el-col>
@@ -89,7 +91,7 @@ const outlogin = () => {
           <div style="text-align: center;">发帖数</div>
         </el-col>
         <el-col :span="24">
-          <div style="text-align: center;">0</div>
+          <div style="text-align: center;">{{count.data.post}}</div>
         </el-col>
       </el-row>
     </el-col>
@@ -99,7 +101,7 @@ const outlogin = () => {
           <div style="text-align: center;">回帖数</div>
         </el-col>
         <el-col :span="24">
-          <div style="text-align: center;">0</div>
+          <div style="text-align: center;">{{count.data.reply}}</div>
         </el-col>
       </el-row>
     </el-col>

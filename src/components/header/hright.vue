@@ -3,11 +3,20 @@ import { Operation } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { Sunny, Moon, Close } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const url = ''
 const drawer = ref(false)
+const to_home = () => {
+  // router.push('/home')
+  window.location.href = '/home'
+}
+const to_post = () => {
+  // router.push('/platelist/0')
+  window.location.href = '/platelist/0'
+}
 </script>
 
 <template>
@@ -46,13 +55,19 @@ const drawer = ref(false)
       <!-- 分割线 -->
       <el-divider>菜单</el-divider>
       <el-menu>
-        <el-menu-item index="1">
+        <el-menu-item index="1"
+                      @click="to_home">
           首页
         </el-menu-item>
-        <el-menu-item index="2">
+        <el-menu-item index="2"
+                      @click="to_post">
           帖子
         </el-menu-item>
-        <el-menu-item index="3">
+        <el-menu-item index="3"
+                      @click="()=>{ElMessage({
+          message: '暂未开放',
+          type: 'warning'
+        })}">
           热点
         </el-menu-item>
       </el-menu>

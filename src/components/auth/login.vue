@@ -61,7 +61,8 @@ const bt_login = async (formEl: FormInstance | undefined) => {
   <el-form ref="formRef"
            :model="form"
            :rules="rules"
-           label-position="top">
+           label-position="top"
+           hide-required-asterisk="false">
     <el-form-item label="用户名"
                   prop="name">
       <el-input v-model="form.name"

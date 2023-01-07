@@ -24,6 +24,5 @@ export function decrypt(
     padding: pad.ZeroPadding,
   });
   let decString = enc.Utf8.stringify(decrypt).toString();
-  console.log("decString", decString);
   return decString;
 }

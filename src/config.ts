@@ -1,5 +1,5 @@
 // 生产环境api地址
-const PROD_API_URL = "http://api.prod.com";
+const PROD_API_URL = "http://www.fyqlin.cn/";
 // 开发环境api地址
 const DEV_API_URL = "http://127.0.0.1:3000/";
 //判断当前环境

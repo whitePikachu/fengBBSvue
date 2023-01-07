@@ -24,7 +24,7 @@ async function gotoPlate(id: number) {
 onMounted(() => {
   isitem.value = false
   const bt = document.getElementById('el-icon-arrow-up')
-  const menu_plates = document.querySelectorAll('.menu-plate')
+  const menu_plates = document.querySelectorAll('.menu-plate') as any
   let mpheight = 0
   for (let menuPlate of menu_plates) {
     mpheight += menuPlate.offsetHeight
@@ -32,7 +32,7 @@ onMounted(() => {
   bt!.style.top = `${(mpheight - bt!.offsetHeight) / 2}px`
   document
     .querySelectorAll('.el-menu--collapse .el-menu-item')
-    .forEach((item, index) => {
+    .forEach((item: any, index) => {
       item.style.width = '0px'
       item.style.padding = '0px'
     })

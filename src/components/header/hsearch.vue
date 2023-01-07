@@ -3,7 +3,7 @@
 <script setup lang="ts">
 import { ref, h } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import { ElDivider } from 'element-plus'
+import { ElDivider, ElMessage } from 'element-plus'
 import router from '../../plugins/router'
 
 const select = ref('帖子')
@@ -39,7 +39,11 @@ const search = () => {
                  @click="to_post"> 帖子</el-button>
     </div>
     <div>
-      <el-button text> 热点</el-button>
+      <el-button text
+                 @click="()=>{ElMessage({
+          message: '暂未开放',
+          type: 'warning'
+        })}"> 热点</el-button>
     </div>
     <div>
       <el-input v-model="input3"

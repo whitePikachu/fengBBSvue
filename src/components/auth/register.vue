@@ -74,6 +74,7 @@ const bt_resgister = async (formEl: FormInstance | undefined) => {
         .then((res) => {
           if (res.data.token) {
             token().token = res.data.token
+            window.location.href = '/home'
             ElMessage.success('注册成功')
           }
         })

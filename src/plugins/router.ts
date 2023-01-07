@@ -15,12 +15,21 @@ const router = createRouter({
           children: [],
         },
         {
+          path: "/posting",
+          component: () => import("../layouts/posting.vue"),
+          children: [],
+        },
+        {
           path: "/auth",
           component: () => import("../layouts/auth.vue"),
         },
         {
           path: "/platelist/:id",
           component: () => import("../views/plate/platelist.vue"),
+        },
+        {
+          path: "/post/:id",
+          component: () => import("../layouts/post.vue"),
         },
         {
           path: "/user",
@@ -33,6 +42,11 @@ const router = createRouter({
             {
               path: "/user/postlist/:id",
               component: () => import("../views/plate/platelist.vue"),
+            },
+            //accountsecurity
+            {
+              path: "/user/accountsecurity",
+              component: () => import("../views/userinfo/accountsecurity.vue"),
             },
           ],
         },

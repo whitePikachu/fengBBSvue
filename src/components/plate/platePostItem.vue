@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import service from '../../plugins/axios'
-import { defineProps, ref } from 'vue'
+import { defineProps, ref, watch } from 'vue'
 import { API_URL } from '../../config'
 
 const dp = defineProps({
@@ -28,6 +28,10 @@ const dp = defineProps({
     type: String,
     required: true,
   },
+  views: {
+    type: String,
+    required: true,
+  },
 })
 //格式化时间几天前
 function formatDate(date: any) {
@@ -51,12 +55,29 @@ const userinfo = ref(
     await service.get(`userinfo/getuser?id=${dp.authorid}`)
   ).data
 )
+//监听数据变化
+watch(
+  dp,
+  async (newVal) => {
+    userinfo.value = await (
+      await service.get(`userinfo/getuser?id=${dp.authorid}`)
+    ).data
+    userinfo.value.data.user.avatar = API_URL + userinfo.value.data.user.avatar
+  },
+
+  { deep: true }
+)
+
 userinfo.value.data.user.avatar = API_URL + userinfo.value.data.user.avatar
+const to_post = () => {
+  window.location.href = `/post/${dp.id}`
+}
 </script>
 
 <template>
   <el-card>
     <el-row>
+
       <el-col :span="4">
         <div>
           <el-avatar :src="userinfo.data.user.avatar? userinfo.data.user.avatar : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
@@ -72,15 +93,15 @@ userinfo.value.data.user.avatar = API_URL + userinfo.value.data.user.avatar
         <div type="text"
              style="float: left">
           <el-space wrap>
-            <el-tag type="primary">作者：{{ userinfo.data.user.nickname }}</el-tag>
+            <el-tag type="primary">作者：{{ userinfo.data.user.nickname?userinfo.data.user.nickname:userinfo.data.username }}</el-tag>
             <el-tag type="info">{{ formatDate(dp.time) }}</el-tag>
             <el-tag type="success">回复{{ dp.numberOfReplies?numberOfReplies:0 }}</el-tag>
-            <el-tag type="warning">浏览量～开发中</el-tag>
+            <el-tag type="warning">浏览量{{ dp.views }}</el-tag>
           </el-space>
         </div>
         <el-button type="text"
                    style="float: right"
-                   @click="() => $router.push(`/${data.id}`)">
+                   @click="to_post">
           去看看
         </el-button>
       </el-col>

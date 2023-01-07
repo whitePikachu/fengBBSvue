@@ -22,11 +22,15 @@ const data = ref((await service.get(`/post/getNewPost?num=5`)).data)
 data.value.map((item: any) => {
   item.createdAt = formatDate(item.createdAt)
 })
+const tabclick = (row: any) => {
+  window.location.href = `/post/${row.id}`
+}
 </script>
 
 <template>
   <el-table :data="data"
-            style="width: 100%">
+            style="width: 100%"
+            @cell-click="tabclick">
     <el-table-column prop="title"
                      label="标题" />
     <el-table-column prop="createdAt"
