@@ -12,33 +12,36 @@ const dp = defineProps({
   numberOfReplies: {
     type: Number,
     required: true,
+    default: -1,
   },
   views: {
     type: Number,
     required: true,
+    default: -1,
   },
 })
 const to_gethub = () => {
   window.location.href = `https://github.com/${data.data.user.github}`
 }
 const data = await (await service.get(`userinfo/getuser?id=${dp.id}`)).data
-// /userinfo/count?id=3
 const count = await (await service.get(`/userinfo/count?id=${dp.id}`)).data
 </script>
 
 <template>
   <el-card style="margin: 10px 0px;"
-           class="post-card">
+           class="post-card-info">
     <template #header>
       <el-button type="text"
                  :href="data.data.user.github">
         {{ data.data.user.nickname?data.data.user.nickname:data.data.username }}
-
       </el-button>
-      <el-divider direction="vertical" />
-      回复:{{ numberOfReplies }}
-      <el-divider direction="vertical" />
-      浏览:{{ views }}
+      <span v-show="numberOfReplies!==-1">
+        <el-divider direction="vertical" />
+        回复:{{ numberOfReplies }}
+        <el-divider direction="vertical" />
+        浏览:{{ views }}
+      </span>
+
     </template>
 
     <div class="center">
@@ -51,7 +54,6 @@ const count = await (await service.get(`/userinfo/count?id=${dp.id}`)).data
     <el-button type="primary"
                style="width: 100%;margin:  0px;"
                @click="to_gethub">GitHub</el-button>
-    <!-- 用户组 -->
     <div class="center">
       <el-tag type="success">Lv.{{data.data.user.level}}</el-tag>
     </div>
@@ -109,5 +111,9 @@ const count = await (await service.get(`/userinfo/count?id=${dp.id}`)).data
 .personalSignature {
   font-size: 14px;
   color: #606266;
+}
+post-card-info {
+  /* ml高度 */
+  height: 100%;
 }
 </style>

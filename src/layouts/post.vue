@@ -6,84 +6,40 @@ import service from '../plugins/axios'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import authorInformation from '../views/post/authorInformation.vue'
+import postarticle from '../views/post/postarticle.vue'
+import postcomment from '../views/post/comment.vue'
 import { useDark } from '@vueuse/core'
 import { watch } from 'vue'
 import { token } from '../plugins/pinia'
-const id = useRoute().params.id
+import { ChatSquare } from '@element-plus/icons-vue'
+const id = useRoute().params.id as string
 const data = await (await service.get(`/post?id=${id}`)).data
 const views = await (await service.get(`post/addview?id=${id}`)).data
-onMounted(() => {
-  const md = document.querySelector('.vuepress-markdown-body') as HTMLElement
-  // 每秒检测一次
-  const html = document.querySelector('html') as HTMLElement
-  //每秒检测一次
-  const timer = setInterval(() => {
-    if (md) {
-      if (html.className === 'dark') {
-        md.style.background = '#1d1e1f'
-        md.style.color = '#fff'
-      } else {
-        md.style.background = '#fff'
-        md.style.color = '#000'
-      }
-    }
-  }, 100)
-})
-async function IsMypost() {
-  if (token().token === '') {
-    return false
-  }
-  const res = await (
-    await service({
-      url: `/auth/islogin`,
-      method: 'get',
-      headers: {
-        Authorization: `Bearer ${token().token}`,
-      },
-    })
-  ).data
-  if (data.author.auth_id === res) {
-    return true
-  }
-  return false
-}
-const isMypost = ref(await IsMypost())
-
 if (data.cod === 400) {
   window.location.href = '/home'
 }
-// 编辑
-const edit = () => {
-  window.location.href = `/posting?plate=${data.plateId}&postid=${data.id}`
-}
-const del = async () => {
-  await service({
-    url: `/post?postid=${id}`,
-    method: 'delete',
-    headers: {
-      Authorization: `Bearer ${token().token}`,
-    },
-  })
-  ElMessage({
-    message: '删除成功',
-    type: 'success',
-  })
-  window.location.href = `/home`
+const router = useRouter()
+const bt_comment = () => {
+  if (token().token) {
+    window.location.href = `/reply?postid=${id}`
+    return
+  }
+  window.location.href = '/auth?type=login'
 }
 </script>
 
 <template>
-
   <el-row gutter="10">
     <el-col :xs="24"
             :sm="24"
             :md="6"
             :lg="6"
             :xl="6">
+
       <Suspense>
         <template #default>
           <authorInformation :id="data.author.auth_id"
-                             :numberOfReplies="data.comment.length"
+                             :numberOfReplies="data.comment"
                              :views="views.data" />
         </template>
         <template #fallback>
@@ -96,34 +52,42 @@ const del = async () => {
             :md="18"
             :lg="18"
             :xl="18">
-      <el-card style="margin: 10px 0px;"
-               class="post-card">
-        <template #header>
-
-          <div class="card-header">
-            <span>{{ data.title }}</span>
-            <!-- 按钮组 -->
-            <div v-show="isMypost">
-              <el-button type="text"
-                         @click="edit">编辑</el-button>
-              <el-divider direction="vertical" />
-              <el-popconfirm title="确定要删除这篇帖子吗？"
-                             @confirm="del">
-                <template #reference>
-                  <el-button type="text">删除</el-button>
-                </template>
-              </el-popconfirm>
-            </div>
-          </div>
+      <Suspense>
+        <template #default>
+          <postarticle :postid="id"
+                       :auth_id="data.author.auth_id"
+                       :title="data.title"
+                       :plateId="data.plateId"
+                       :content="data.content" />
         </template>
-        <v-md-editor :model-value="data.content"
-                     mode="preview"
-                     class="md"></v-md-editor>
-      </el-card>
-
+        <template #fallback>
+          <el-skeleton />
+        </template>
+      </Suspense>
     </el-col>
   </el-row>
+  <el-divider />
+  <el-affix position="bottom"
+            :offset="20">
+    <div class="fl">
+      <el-button type="primary"
+                 @click="bt_comment"
+                 size="large"
+                 :icon="ChatSquare"
+                 circle></el-button>
+    </div>
 
+  </el-affix>
+
+  <Suspense>
+    <template #default>
+      <postcomment :postid="id"
+                   class="commentid" />
+    </template>
+    <template #fallback>
+      <el-skeleton />
+    </template>
+  </Suspense>
 </template>
 
 <style scoped>
@@ -135,5 +99,10 @@ const del = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.el-affix {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 </style>

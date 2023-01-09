@@ -76,10 +76,14 @@ const bt_resgister = async (formEl: FormInstance | undefined) => {
             token().token = res.data.token
             window.location.href = '/home'
             ElMessage.success('注册成功')
+          } else {
+            formRef.value?.resetFields()
+            ElMessage.error(res.data.msg)
           }
         })
         .catch((err) => {
           ElMessage.error(err.message)
+          formRef.value?.resetFields()
         })
     }
   })

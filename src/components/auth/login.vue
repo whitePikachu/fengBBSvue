@@ -19,6 +19,7 @@ const rules = reactive({
     { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
   ],
 })
+
 const formRef = ref()
 const bt_login = async (formEl: FormInstance | undefined) => {
   formEl?.validate(async (valid: boolean, e: any) => {

@@ -20,6 +20,11 @@ const router = createRouter({
           children: [],
         },
         {
+          path: "/reply",
+          component: () => import("../layouts/reply.vue"),
+          children: [],
+        },
+        {
           path: "/auth",
           component: () => import("../layouts/auth.vue"),
         },
