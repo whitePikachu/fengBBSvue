@@ -60,7 +60,20 @@ async function IsMypost() {
       },
     })
   ).data
-  if (data.auth_id === res) {
+  const jurisdiction = await (
+    await service({
+      url: `/auth/Permissions`,
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token().token}`,
+      },
+    })
+  ).data
+  if (
+    data.auth_id === res ||
+    jurisdiction.msg === '管理员' ||
+    jurisdiction.msg === '超级管理员'
+  ) {
     return true
   }
   return false

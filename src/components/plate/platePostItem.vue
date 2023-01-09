@@ -67,10 +67,14 @@ watch(
 
   { deep: true }
 )
-
-userinfo.value.data.user.avatar = API_URL + userinfo.value.data.user.avatar
 const to_post = () => {
   window.location.href = `/post/${dp.id}`
+}
+if (userinfo.value.data.user.avatar) {
+  userinfo.value.data.user.avatar = API_URL + userinfo.value.data.user.avatar
+} else {
+  userinfo.value.data.user.avatar =
+    'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
 }
 </script>
 
@@ -79,9 +83,12 @@ const to_post = () => {
     <el-row>
 
       <el-col :span="4">
-        <div>
-          <el-avatar :src="userinfo.data.user.avatar? userinfo.data.user.avatar : 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"
-                     size="large" />
+        <div class="c">
+          <div style="margin-bottom: 6px;">
+            <el-avatar :src="userinfo.data.user.avatar"
+                       :size="60" />
+          </div>
+          <el-tag type="primary">{{ userinfo.data.user.nickname?userinfo.data.user.nickname:userinfo.data.username }}</el-tag>
         </div>
 
       </el-col>
@@ -89,11 +96,9 @@ const to_post = () => {
         <span class="title"
               v-html="dp.title" />
         <p class="content">{{dp.content}}</p>
-        <!-- 左边 -->
         <div type="text"
              style="float: left">
           <el-space wrap>
-            <el-tag type="primary">作者：{{ userinfo.data.user.nickname?userinfo.data.user.nickname:userinfo.data.username }}</el-tag>
             <el-tag type="info">{{ formatDate(dp.time) }}</el-tag>
             <el-tag type="success">回复{{ dp.numberOfReplies?numberOfReplies:0 }}</el-tag>
             <el-tag type="warning">浏览量{{ dp.views }}</el-tag>
@@ -110,6 +115,13 @@ const to_post = () => {
 </template>
 
 <style scoped>
+.c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
 .title {
   font-size: 14px;
   color: #909399;

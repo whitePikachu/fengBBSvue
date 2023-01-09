@@ -25,6 +25,13 @@ const to_gethub = () => {
 }
 const data = await (await service.get(`userinfo/getuser?id=${dp.id}`)).data
 const count = await (await service.get(`/userinfo/count?id=${dp.id}`)).data
+const avatar = ref(API_URL + data.data.user.avatar)
+if (!data.data.user.avatar) {
+  avatar.value =
+    'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'
+} else {
+  avatar.value = API_URL + data.data.user.avatar
+}
 </script>
 
 <template>
@@ -32,7 +39,8 @@ const count = await (await service.get(`/userinfo/count?id=${dp.id}`)).data
            class="post-card-info">
     <template #header>
       <el-button type="text"
-                 :href="data.data.user.github">
+                 :href="data.data.user.github"
+                 @click="to_gethub">
         {{ data.data.user.nickname?data.data.user.nickname:data.data.username }}
       </el-button>
       <span v-show="numberOfReplies!==-1">
@@ -41,11 +49,10 @@ const count = await (await service.get(`/userinfo/count?id=${dp.id}`)).data
         <el-divider direction="vertical" />
         浏览:{{ views }}
       </span>
-
     </template>
 
     <div class="center">
-      <el-avatar :src="API_URL+data.data.user.avatar"
+      <el-avatar :src="avatar"
                  :size="100" />
     </div>
     <div class="left">

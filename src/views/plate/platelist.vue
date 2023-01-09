@@ -66,6 +66,8 @@ function bt_post() {
 </script>
 
 <template>
+  <el-empty v-show="data.data.length==0"
+            description="没有找到任何帖子" />
   <div v-for="(item,i) of data.data"
        :key="i"
        style="margin: 10px 0;">

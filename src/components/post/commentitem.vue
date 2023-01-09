@@ -59,7 +59,20 @@ async function IsMycomment() {
       },
     })
   ).data
-  if (data.authorid === res) {
+  const jurisdiction = await (
+    await service({
+      url: `/auth/Permissions`,
+      method: 'get',
+      headers: {
+        Authorization: `Bearer ${token().token}`,
+      },
+    })
+  ).data
+  if (
+    data.authorid === res ||
+    jurisdiction.msg === '管理员' ||
+    jurisdiction.msg === '超级管理员'
+  ) {
     return true
   }
   return false
