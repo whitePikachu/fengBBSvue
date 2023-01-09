@@ -26,7 +26,8 @@ const data = ref(
             :key="i">
     <template #default>
 
-      <commentitem :id="item.id"
+      <commentitem :postid="postid"
+                   :commentid="item.id"
                    :content="item.content"
                    :authorid="item.authorId"
                    :time="item.updatedAt" />

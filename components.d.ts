@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     Cod: typeof import('./src/components/cod/index.vue')['default']
     Commentitem: typeof import('./src/components/post/commentitem.vue')['default']
     ElAffix: typeof import('element-plus/es')['ElAffix']
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']

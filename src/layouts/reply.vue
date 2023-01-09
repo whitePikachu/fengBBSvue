@@ -5,12 +5,33 @@ import service from '../plugins/axios'
 import { token } from '../plugins/pinia'
 import { ElMessage, FormInstance } from 'element-plus'
 
-const { postid } = useRoute().query
-console.log(postid)
+const { postid, commentid } = useRoute().query
+console.log('接收' + JSON.stringify(useRoute().query))
 
 const submit = async (formEl: FormInstance | undefined) => {
   formEl?.validate(async (valid, e) => {
     if (valid) {
+      if (commentid) {
+        const res = await service({
+          method: 'PUT',
+          url: '/comment',
+          headers: {
+            Authorization: `Bearer ${token().token}`,
+            cod: ressuccess,
+          },
+          data: {
+            Commentid: commentid,
+            content: formDate.content,
+          },
+        })
+        if (res.data.cod === 200) {
+          window.location.href = `/post/${postid}`
+        } else {
+          formEl?.resetFields()
+          ElMessage.error(res.data.msg)
+        }
+        return
+      }
       const res = await service({
         method: 'post',
         url: '/comment',
@@ -43,9 +64,12 @@ const rule = reactive({
   cod: [{ required: true, message: '请点击按钮进行验证', trigger: 'change' }],
   content: [{ required: true, message: '请输入回复内容', trigger: 'change' }],
 })
-console.log(postid)
-
 const { title } = await (await service.get(`/post?id=${postid}`)).data
+if (commentid) {
+  formDate.content = await (
+    await service.get(`/comment/id?commentId=${commentid}`)
+  ).data.content
+}
 let ressuccess = ''
 const codvisible = ref(false)
 const bt_disabled = ref(false)

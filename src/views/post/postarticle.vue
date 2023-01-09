@@ -25,6 +25,10 @@ const data = defineProps({
     type: String,
     required: true,
   },
+  updatedAt: {
+    type: String,
+    required: true,
+  },
 })
 const edit = () => {
   window.location.href = `/posting?plate=${data.plateId}&postid=${data.postid}`
@@ -79,6 +83,22 @@ onMounted(() => {
   }, 100)
 })
 const isMypost = ref(await IsMypost())
+function formatDate(date: any) {
+  const d = new Date(date)
+  const now = Date.now()
+  const diff = (now - d.getTime()) / 1000
+  if (diff < 30) {
+    return '刚刚'
+  } else if (diff < 3600) {
+    // less 1 hour
+    return Math.ceil(diff / 60) + '分钟前'
+  } else if (diff < 3600 * 24) {
+    return Math.ceil(diff / 3600) + '小时前'
+  } else if (diff < 3600 * 24 * 2) {
+    return '1天前'
+  }
+  return Math.ceil(diff / (3600 * 24)) + '天前'
+}
 </script>
 
 <template>
@@ -101,10 +121,17 @@ const isMypost = ref(await IsMypost())
         </div>
       </div>
     </template>
+    <el-alert :title="`本帖最后更新与${formatDate(data.updatedAt)}，请注意时效性`"
+              type="info"
+              :closable="false" />
+    <br />
+    <el-alert :title="`本帖所有观点均与作者有关，并不代表论坛观点`"
+              type="info" />
     <v-md-editor :model-value="data.content"
                  mode="preview"
                  class="md">
     </v-md-editor>
+
   </el-card>
 </template>
 

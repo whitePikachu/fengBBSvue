@@ -52,13 +52,15 @@ const bt_comment = () => {
             :md="18"
             :lg="18"
             :xl="18">
+
       <Suspense>
         <template #default>
           <postarticle :postid="id"
                        :auth_id="data.author.auth_id"
                        :title="data.title"
                        :plateId="data.plateId"
-                       :content="data.content" />
+                       :content="data.content"
+                       :updatedAt="data.updatedAt" />
         </template>
         <template #fallback>
           <el-skeleton />

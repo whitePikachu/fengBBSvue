@@ -4,7 +4,11 @@ import service from '../../plugins/axios'
 import { API_URL } from '../../config'
 import { token } from '../../plugins/pinia'
 const data = defineProps({
-  id: {
+  commentid: {
+    type: String,
+    required: true,
+  },
+  postid: {
     type: String,
     required: true,
   },
@@ -23,10 +27,24 @@ const data = defineProps({
 })
 
 const edit = () => {
-  window.location.href = `/posting?postid=${data.id}`
+  window.location.href = `/reply?postid=${data.postid}&commentid=${data.commentid}`
 }
-const del = () => {
-  window.location.href = `/posting?postid=${data.id}`
+const del = async () => {
+  const res = (
+    await service({
+      url: '/comment',
+      method: 'delete',
+      headers: {
+        Authorization: `Bearer ${token().token}`,
+      },
+      data: {
+        Commentid: data.commentid,
+      },
+    })
+  ).data
+  if (res.cod === 200) {
+    window.location.href = `/post/${data.postid}`
+  }
 }
 async function IsMycomment() {
   if (token().token === '') {
@@ -80,10 +98,15 @@ const userdata = await (
                      @click="edit">
             编辑
           </el-button>
-          <el-button type="text"
-                     @click="del">
-            删除
-          </el-button>
+          <el-popconfirm @confirm="del()"
+                         title="确定要删除这条评论？">
+            <template #reference>
+              <el-button type="text">
+                删除
+              </el-button>
+            </template>
+          </el-popconfirm>
+
         </div>
         <el-tag type="success">
           发表时间:{{ formatDate(data.time)}}
