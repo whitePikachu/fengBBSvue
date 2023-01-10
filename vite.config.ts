@@ -10,6 +10,10 @@ export default defineConfig({
   optimizeDeps: {
     include: ["@kangc/v-md-editor/lib/theme/vuepress.js"],
   },
+  //  配置服务器
+  server: {
+    port: 8080,
+  },
   plugins: [
     vue(),
     AutoImport({

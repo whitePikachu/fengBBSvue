@@ -31,6 +31,10 @@ const router = createRouter({
         {
           path: "/platelist/:id",
           component: () => import("../views/plate/platelist.vue"),
+
+          meta: {
+            keepAlive: false,
+          },
         },
         {
           path: "/post/:id",

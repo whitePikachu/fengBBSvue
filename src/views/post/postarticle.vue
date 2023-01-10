@@ -29,24 +29,32 @@ const data = defineProps({
     type: String,
     required: true,
   },
+  Istop: {
+    type: Boolean,
+    required: true,
+  },
 })
+
 const edit = () => {
   window.location.href = `/posting?plate=${data.plateId}&postid=${data.postid}`
 }
 const del = async () => {
-  await service({
-    url: `/post?postid=${data.postid}`,
-    method: 'delete',
-    headers: {
-      Authorization: `Bearer ${token().token}`,
-    },
-  })
-  ElMessage({
-    message: '删除成功',
-    type: 'success',
-  })
-  window.location.href = `/home`
+  if (token().token) {
+    await service({
+      url: `/post?postid=${data.postid}`,
+      method: 'delete',
+      headers: {
+        Authorization: `Bearer ${token().token}`,
+      },
+    })
+    ElMessage({
+      message: '删除成功',
+      type: 'success',
+    })
+    window.location.href = `/home`
+  }
 }
+const jurisdiction = ref()
 async function IsMypost() {
   if (token().token === '') {
     return false
@@ -60,23 +68,52 @@ async function IsMypost() {
       },
     })
   ).data
-  const jurisdiction = await (
+  if (token().token) {
+    jurisdiction.value = await (
+      await service({
+        url: `/auth/Permissions`,
+        method: 'get',
+        headers: {
+          Authorization: `Bearer ${token().token}`,
+        },
+      })
+    ).data
+  }
+
+  if (
+    data.auth_id === res ||
+    jurisdiction.value.msg === '管理员' ||
+    jurisdiction.value.msg === '超级管理员'
+  ) {
+    return true
+  }
+  return false
+}
+const Istop = ref(data.Istop)
+const toppost = async () => {
+  if (!token().token) {
+    ElMessage({
+      message: '请先登陆',
+      type: 'success',
+    })
+    return
+  }
+  const res = (
     await service({
-      url: `/auth/Permissions`,
-      method: 'get',
+      url: `post/top?id=${data.postid}`,
+      method: 'put',
       headers: {
         Authorization: `Bearer ${token().token}`,
       },
     })
   ).data
-  if (
-    data.auth_id === res ||
-    jurisdiction.msg === '管理员' ||
-    jurisdiction.msg === '超级管理员'
-  ) {
-    return true
+  if (res.cod === 200) {
+    ElMessage({
+      message: res.message,
+      type: 'success',
+    })
+    Istop.value = res.data
   }
-  return false
 }
 onMounted(() => {
   const md = document.querySelector('.vuepress-markdown-body') as HTMLElement
@@ -112,6 +149,13 @@ function formatDate(date: any) {
   }
   return Math.ceil(diff / (3600 * 24)) + '天前'
 }
+const isadmin = ref()
+if (jurisdiction.value) {
+  isadmin.value = ref(
+    jurisdiction.value.msg === '管理员' ||
+      jurisdiction.value.msg === '超级管理员'
+  )
+}
 </script>
 
 <template>
@@ -122,6 +166,11 @@ function formatDate(date: any) {
       <div class="card-header">
         <span>{{ data.title }}</span>
         <div v-show="isMypost">
+          <el-button type="text"
+                     v-show="isadmin"
+                     @click="toppost">{{ Istop?`取消置顶`:`置顶帖子` }}</el-button>
+          <el-divider v-show="isadmin"
+                      direction="vertical" />
           <el-button type="text"
                      @click="edit">编辑</el-button>
           <el-divider direction="vertical" />
