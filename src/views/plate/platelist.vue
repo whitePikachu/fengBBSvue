@@ -65,7 +65,7 @@ function bt_post() {
   window.location.href = `/posting?plate=${id === 0 ? 1 : id}`
 }
 
-const topPost = ref([])
+const topPost = ref([] as any)
 if (id != 0) {
   topPost.value = await (
     await service.get(
