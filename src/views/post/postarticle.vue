@@ -164,7 +164,8 @@ if (jurisdiction.value) {
            class="post-card">
     <template #header>
       <div class="card-header">
-        <span>{{ data.title }}</span>
+        <span>{{ data.title }} <el-tag type="danger"
+                  v-show="Istop">置顶</el-tag></span>
         <div v-show="isMypost">
           <el-button type="text"
                      v-show="isadmin"

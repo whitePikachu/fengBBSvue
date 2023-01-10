@@ -32,6 +32,11 @@ const dp = defineProps({
     type: String,
     required: true,
   },
+  istop: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 })
 //格式化时间几天前
 function formatDate(date: any) {
@@ -95,6 +100,8 @@ if (userinfo.value.data.user.avatar) {
       <el-col :span="20">
         <span class="title"
               v-html="dp.title" />
+        <el-tag type="danger"
+                v-show="istop">置顶</el-tag>
         <p class="content">{{dp.content}}</p>
         <div type="text"
              style="float: left">
@@ -126,6 +133,7 @@ if (userinfo.value.data.user.avatar) {
   font-size: 14px;
   color: #909399;
   margin-bottom: 6px;
+  margin-right: 10px;
 }
 .content {
   font-size: 14px;

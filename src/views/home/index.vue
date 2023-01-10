@@ -2,10 +2,15 @@
 import plateMenu from '../../components/plate/plateMenu.vue'
 import newPostVue from '../../components/home/newPost.vue'
 import redplate from '../../components/home/redplate.vue'
+import service from '../../plugins/axios'
+const data = (await service.get('/auth/concat')).data
+const notice = `本论坛已经有${data.data.count}个会员，最新注册的会员是${data.data.newuser}，欢迎大家来到本论坛！`
 </script>
 
 <template>
-
+  <el-alert :title="notice"
+            type="success"
+            :closable="false" />
   <div id="home">
     <el-affix :offset="120"
               target="#home"
@@ -20,8 +25,6 @@ import redplate from '../../components/home/redplate.vue'
       </Suspense>
     </el-affix>
   </div>
-  <!-- row 手机占24 电脑占12 -->
-  <!-- 幻灯片 -->
   <el-row :gutter="20">
     <el-col :xs="24"
             :sm="24"
@@ -33,7 +36,7 @@ import redplate from '../../components/home/redplate.vue'
           <el-carousel height="200px">
             <el-carousel-item v-for="item in 4"
                               :key="item">
-              <h3>{{ item }}</h3>
+              <h3>暂无内容</h3>
             </el-carousel-item>
           </el-carousel>
         </el-card>

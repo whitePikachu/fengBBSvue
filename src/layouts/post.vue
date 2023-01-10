@@ -52,6 +52,7 @@ const bt_comment = () => {
             :md="18"
             :lg="18"
             :xl="18">
+
       <Suspense>
 
         <template #default>

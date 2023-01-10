@@ -64,18 +64,25 @@ const page = async (v: number) => {
 function bt_post() {
   window.location.href = `/posting?plate=${id === 0 ? 1 : id}`
 }
-
 const topPost = ref([] as any)
+const platename = ref('')
 if (id != 0) {
   topPost.value = await (
     await service.get(
       `/post/platelist?plateid=${id}&page=${1}&limit=${5}&isTop=true`
     )
   ).data.data
+  const plates = (await service.get(`/plate/getplate`)).data
+  platename.value = plates.find((v: any) => v.id == id).name
 }
 </script>
 
 <template>
+  <el-card id="header"
+           v-show="id != 0"
+           :body-style="{ padding: '0px' }">
+    {{ platename }}
+  </el-card>
   <el-empty v-show="data.data.length==0"
             description="没有找到任何帖子" />
   <div v-show="topPost.length > 0">
@@ -89,20 +96,24 @@ if (id != 0) {
                      :authorid="item.authorId"
                      :time="item.updatedAt"
                      :numberOfReplies="item.comments"
-                     :views="item.views" />
+                     :views="item.views"
+                     :istop="false" />
     </div>
   </div>
   <el-divider>普通帖子</el-divider>
+
   <div v-for="(item,i) of data.data"
        :key="i"
        style="margin: 10px 0;">
+
     <platePostItem :id="item.id"
                    :title="item.title"
                    :content="item.content"
                    :authorid="item.authorId"
                    :time="item.updatedAt"
                    :numberOfReplies="item.comments"
-                   :views="item.views" />
+                   :views="item.views"
+                   :istop="Boolean(item.isTop) " />
   </div>
   <el-divider />
   <el-pagination layout="prev, pager, next"
@@ -140,6 +151,16 @@ if (id != 0) {
   right: 0;
   bottom: 0;
 }
+#header {
+  height: 100px;
+  text-align: center;
+  font-weight: 700;
+  line-height: 100px;
+  font-size: 30px;
+  font-family: 'YouYuan', 'Microsoft YaHei', 'SimHei', 'Helvetica Neue',
+    Helvetica, Arial, sans-serif;
+}
+
 #plate {
   position: fixed;
   top: 120px;
