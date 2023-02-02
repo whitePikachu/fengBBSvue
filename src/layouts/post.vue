@@ -61,7 +61,7 @@ const bt_comment = () => {
                        :title="data.title"
                        :plateId="data.plateId"
                        :content="data.content"
-                       :updatedAt="data.updatedAt"
+                       :updatedAt="data.updatedTime"
                        :Istop="data.isTop" />
         </template>
         <template #fallback>

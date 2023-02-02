@@ -107,9 +107,7 @@ onMounted(async () => {
       }
     }
     if (success === 4) {
-      console.log('通过')
       codsuccess('success', encrypt(JSON.stringify(seed)))
-
       return
     }
     if (seed.length === 4) {

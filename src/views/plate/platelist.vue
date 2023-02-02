@@ -105,12 +105,11 @@ if (id != 0) {
   <div v-for="(item,i) of data.data"
        :key="i"
        style="margin: 10px 0;">
-
     <platePostItem :id="item.id"
                    :title="item.title"
                    :content="item.content"
                    :authorid="item.authorId"
-                   :time="item.updatedAt"
+                   :time="item.updatedTime"
                    :numberOfReplies="item.comments"
                    :views="item.views"
                    :istop="Boolean(item.isTop) " />
